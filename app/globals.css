@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+:root {
+  --night: #111a38;
+  --ink: #091022;
+  --ticket: #f0f2ff;
+  --electric: #ff4f9a;
+  --electric-dark: #d92c78;
+  --line: #aab2d9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--ink);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+button,
+time,
+address {
+  font: inherit;
+}
+
+.event-shell {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(1rem, 4vw, 3.5rem);
+  background:
+    linear-gradient(105deg, transparent 47%, rgb(255 255 255 / 4%) 47% 48%, transparent 48%),
+    radial-gradient(circle at 16% 16%, #27366b 0, transparent 34%),
+    var(--night);
+}
+
+.event-ticket {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 72rem);
+  min-height: min(42rem, calc(100svh - 2rem));
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(17rem, 0.65fr);
+  grid-template-rows: 1fr auto auto;
+  column-gap: clamp(2rem, 6vw, 6rem);
+  padding: clamp(2rem, 6vw, 5.5rem);
+  background: var(--ticket);
+  box-shadow: 1.25rem 1.25rem 0 var(--electric);
+}
+
+.event-ticket::before,
+.event-ticket::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 61%;
+  width: 2.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--night);
+  transform: translateY(-50%);
+}
+
+.event-ticket::before {
+  left: -1.125rem;
+}
+
+.event-ticket::after {
+  right: -1.125rem;
+}
+
+h1 {
+  grid-row: 1 / 4;
+  align-self: center;
+  max-width: 8ch;
+  margin: 0;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: clamp(4.25rem, 10vw, 9.5rem);
+  font-weight: 900;
+  line-height: 0.78;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+time,
+address {
+  display: block;
+  align-self: end;
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+address {
+  align-self: start;
+  margin-top: 1.5rem;
+  font-style: normal;
+}
+
+button {
+  align-self: end;
+  width: 100%;
+  margin-top: clamp(2.5rem, 8vh, 6rem);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 1.15rem 1.5rem;
+  background: var(--electric);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0.35rem 0.35rem 0 var(--ink);
+  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+}
+
+button:hover {
+  background: #ff72ad;
+  transform: translate(0.15rem, 0.15rem);
+  box-shadow: 0.2rem 0.2rem 0 var(--ink);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--electric-dark);
+  outline-offset: 4px;
+}
+
+button:active {
+  transform: translate(0.35rem, 0.35rem);
+  box-shadow: none;
+}
+
+@media (max-width: 760px) {
+  .event-ticket {
+    min-height: calc(100svh - 2rem);
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto auto auto;
+    gap: 0;
+    padding: clamp(2rem, 9vw, 3.25rem);
+    box-shadow: 0.65rem 0.65rem 0 var(--electric);
+  }
+
+  h1 {
+    grid-row: auto;
+    align-self: center;
+    margin-bottom: 3rem;
+    font-size: clamp(4.2rem, 20vw, 7rem);
+  }
+
+  button {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button {
+    transition: none;
+  }
+}
