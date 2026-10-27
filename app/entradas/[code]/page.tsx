@@ -45,7 +45,7 @@ export default function PublicTicketPage() {
   }, [code]);
 
   if (state === "loading") return <main className="digital-ticket-page"><p className="digital-ticket-message">Cargando entrada…</p></main>;
-  if (state === "missing") return <main className="digital-ticket-page"><section className="digital-ticket digital-ticket-empty"><p className="digital-ticket-kicker">Door list</p><h1>Entrada no disponible</h1><p>Revisa que el enlace esté completo. Por seguridad no podemos buscar entradas por nombre o correo.</p><Link href="/eventos">Ver eventos</Link></section></main>;
+  if (state === "missing") return <main className="digital-ticket-page"><section className="digital-ticket digital-ticket-empty"><p className="digital-ticket-kicker">Door list</p><h1>Entrada no disponible</h1><p>Revisa que el enlace esté completo. Por seguridad no podemos buscar entradas por nombre o correo.</p><Link href="/">Ver eventos</Link></section></main>;
   if (state === "error" || !ticket) return <main className="digital-ticket-page"><section className="digital-ticket digital-ticket-empty"><p className="digital-ticket-kicker">Door list</p><h1>No pudimos abrir la entrada</h1><p>Actualiza la página para intentarlo de nuevo.</p></section></main>;
 
   const date = new Intl.DateTimeFormat("es-MX", { dateStyle: "full", timeStyle: "short", timeZone: "America/Mexico_City" }).format(new Date(ticket.event_starts_at));
