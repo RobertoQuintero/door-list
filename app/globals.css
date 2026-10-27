@@ -78,16 +78,28 @@ address {
   right: -1.125rem;
 }
 
+.welcome-message {
+  grid-column: 2;
+  align-self: end;
+  margin: 0 0 1rem;
+  color: var(--electric-dark);
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 h1 {
   grid-row: 1 / 4;
   align-self: center;
-  max-width: 8ch;
+  max-width: 6.5ch;
   margin: 0;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: clamp(4.25rem, 10vw, 9.5rem);
+  font-size: clamp(4rem, 8vw, 7.5rem);
   font-weight: 900;
-  line-height: 0.78;
-  letter-spacing: -0.055em;
+  line-height: 0.88;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
 }
 
@@ -163,6 +175,12 @@ button:active {
     font-size: clamp(4.2rem, 20vw, 7rem);
   }
 
+  .welcome-message {
+    grid-column: 1;
+    align-self: end;
+    margin-bottom: 1rem;
+  }
+
   button {
     margin-top: 2.5rem;
   }
@@ -173,3 +191,22 @@ button:active {
     transition: none;
   }
 }
+
+/* Organizer workspace: a utilitarian backstage board, not a public ticket. */
+:root { --paper: #f5f2ea; --black: #191714; --cobalt: #2a45b8; --lime: #d8ff3f; --muted: #766f64; }
+body { background: var(--paper); color: var(--black); font-family: Arial, Helvetica, sans-serif; }
+button, input, textarea { font: inherit; }
+button { width: auto; margin: 0; box-shadow: none; border: 0; text-transform: none; letter-spacing: 0; }
+.setup, .auth-shell { min-height: 100svh; display: grid; place-items: center; padding: 1.5rem; background: repeating-linear-gradient(90deg, transparent 0 35px, #ded8cc 36px); }
+.setup { display: block; padding: 4rem; }
+.auth-card { width: min(100%, 34rem); padding: clamp(2rem, 7vw, 5rem); background: var(--black); color: white; box-shadow: 12px 12px 0 var(--cobalt); }
+.auth-card h1, .rail h1 { max-width: 10ch; font-family: Impact, "Arial Narrow", sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); line-height: .88; letter-spacing: -.02em; }
+.auth-card h1 { margin: 1rem 0 1.5rem; color: var(--lime); }
+.lede { line-height: 1.5; color: #dbd8d1; }
+.eyebrow { margin: 0; color: var(--cobalt); font: 700 .72rem/1.3 "Courier New", monospace; letter-spacing: .1em; text-transform: uppercase; }
+.auth-card .eyebrow { color: var(--lime); }.stack { display: grid; gap: 1rem; margin-top: 2rem; }.stack label, .event-form label, .ticket-form label { display: grid; gap: .45rem; font-size: .8rem; font-weight: 700; }.stack input { background: transparent; color: white; border-color: #777; }
+input, textarea { width: 100%; padding: .8rem; border: 1px solid #aaa296; border-radius: 0; background: white; color: var(--black); } textarea { resize: vertical; }
+button { padding: .85rem 1rem; background: var(--cobalt); color: white; font-weight: 800; cursor: pointer; } button:hover { background: #20379a; transform: none; } button:disabled { opacity: .55; cursor: not-allowed; }.text-button, .sign-out { padding: 0; margin-top: 1.2rem; background: transparent; color: inherit; text-decoration: underline; }.notice { margin: 1rem 0 0; font-size: .9rem; line-height: 1.4; color: var(--cobalt); }.auth-card .notice { color: var(--lime); }
+.dashboard { min-height: 100svh; display: grid; grid-template-columns: minmax(15rem, 22rem) 1fr; }.rail { display: flex; flex-direction: column; gap: 2rem; padding: 2rem; background: var(--black); color: white; }.rail h1 { margin: .7rem 0 0; color: var(--lime); font-size: 3.5rem; }.new-event { background: var(--lime); color: var(--black); }.rail nav { display: grid; align-content: start; gap: .25rem; }.event-link { display: grid; gap: .2rem; padding: .8rem 0; text-align: left; background: transparent; color: #bbb7af; border-bottom: 1px solid #3b3935; }.event-link strong { color: white; }.event-link span { font-size: .75rem; }.event-link.active { padding-left: .75rem; color: var(--lime); border-left: 3px solid var(--lime); }.sign-out { margin-top: auto; text-align: left; color: #bbb7af; }.empty { color: var(--muted); line-height: 1.4; }
+.workspace { max-width: 75rem; padding: clamp(2rem, 6vw, 5rem); }.workspace header h2, .ticket-section h2 { margin: .5rem 0 2.5rem; font-size: clamp(2rem, 5vw, 4rem); line-height: .95; letter-spacing: -.06em; }.event-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; padding-bottom: 2rem; border-bottom: 2px solid var(--black); }.wide, .form-actions { grid-column: 1 / -1; }.event-form label span { color: var(--muted); font-weight: 400; }.form-actions { display: flex; gap: .75rem; }.danger { background: transparent; color: #a22323; outline: 1px solid #a22323; }.ticket-section { padding-top: 2rem; }.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }.section-heading h2 { margin: .4rem 0 1.25rem; font-size: clamp(1.7rem, 3vw, 2.6rem); }.capacity { display: grid; margin: 0 0 1.25rem; text-align: right; font-family: "Courier New", monospace; }.capacity strong { font-size: 1.8rem; }.capacity span { color: var(--muted); font-size: .75rem; }.capacity-bar { height: .65rem; background: #d4cfc4; }.capacity-bar span { display: block; height: 100%; background: var(--cobalt); }.ticket-form { display: grid; grid-template-columns: 1fr 8rem auto; gap: 1rem; align-items: end; margin: 1.5rem 0; }.ticket-list { margin: 0; padding: 0; list-style: none; }.ticket-list li { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-top: 1px solid #c8c1b5; }.ticket-list li span { display: grid; gap: .2rem; }.ticket-list small { color: var(--muted); }.icon-button { display: grid; width: 2rem; height: 2rem; place-items: center; padding: 0; background: transparent; color: var(--black); font-size: 1.7rem; font-weight: 400; }.icon-button:hover { background: #e4dfd4; }
+@media (max-width: 720px) { .dashboard { grid-template-columns: 1fr; }.rail { gap: 1.25rem; }.rail h1 { font-size: 2.6rem; }.rail nav { display: flex; overflow-x: auto; }.event-link { min-width: 10rem; }.sign-out { margin-top: 0; }.event-form, .ticket-form { grid-template-columns: 1fr; }.ticket-form button { width: 100%; }.workspace { padding: 2rem 1.25rem; }.section-heading { align-items: start; }.capacity { margin-top: .4rem; } }
