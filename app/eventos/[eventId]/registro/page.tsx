@@ -5,12 +5,17 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { formatEventDateTime } from "@/lib/format";
 import { supabase } from "@/lib/supabase/client";
-import type { RegistrationAvailabilityRow, RegistrationResponse } from "@/lib/types";
+import type {
+  RegistrationAvailabilityRow,
+  RegistrationErrorCode,
+  RegistrationErrorResponse,
+  RegistrationSuccessResponse,
+} from "@/lib/types";
 
 type ViewState = "loading" | "available" | "unavailable" | "error";
 type SubmissionState = "idle" | "submitting" | "success";
 
-const messages: Record<string, string> = {
+const messages: Record<RegistrationErrorCode, string> = {
   event_not_available: "Este evento ya no está disponible para registro.",
   ticket_not_found: "La entrada seleccionada ya no está disponible. Elige otra opción.",
   ticket_sold_out: "Esta entrada acaba de agotarse. Elige otra opción.",
@@ -99,7 +104,34 @@ export default function PublicRegistrationPage() {
       return;
     }
 
-    const result = await response.json() as RegistrationResponse;
+    if (!response.ok) {
+      setSubmissionState("idle");
+      let errorCode: RegistrationErrorCode = "registration_error";
+      try {
+        const result = await response.json() as Partial<RegistrationErrorResponse>;
+        if (result.error && result.error in messages) errorCode = result.error;
+      } catch {
+        setMessage(messages.registration_error);
+        return;
+      }
+      setMessage(messages[errorCode]);
+      if (errorCode === "ticket_sold_out" || errorCode === "ticket_not_found") {
+        setSelectedTicketId("");
+        await loadEvent();
+      }
+      if (errorCode === "event_not_available") setViewState("unavailable");
+      return;
+    }
+
+    let result: RegistrationSuccessResponse;
+    try {
+      result = await response.json() as RegistrationSuccessResponse;
+    } catch {
+      setSubmissionState("idle");
+      setMessage(messages.registration_error);
+      return;
+    }
+
     if (result.outcome === "success" && result.ticketCode) {
       setTicketCode(result.ticketCode);
       setEmailSent(result.emailSent === true);
@@ -108,12 +140,7 @@ export default function PublicRegistrationPage() {
     }
 
     setSubmissionState("idle");
-    setMessage(messages[result.outcome ?? ""] ?? "No pudimos completar tu registro.");
-    if (result.outcome === "ticket_sold_out" || result.outcome === "ticket_not_found") {
-      setSelectedTicketId("");
-      await loadEvent();
-    }
-    if (result.outcome === "event_not_available") setViewState("unavailable");
+    setMessage("No pudimos completar tu registro.");
   }
 
   if (viewState === "loading") return <main className="registration-page"><p className="registration-status">Consultando disponibilidad…</p></main>;

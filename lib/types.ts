@@ -68,6 +68,8 @@ export type RegistrationOutcome =
   | "registration_error"
   | "server_not_configured";
 
+export type RegistrationErrorCode = Exclude<RegistrationOutcome, "success">;
+
 export type RegistrationSuccessResponse = {
   outcome: "success";
   ticketCode: string;
@@ -75,7 +77,7 @@ export type RegistrationSuccessResponse = {
 };
 
 export type RegistrationErrorResponse = {
-  outcome: Exclude<RegistrationOutcome, "success">;
+  error: RegistrationErrorCode;
 };
 
 export type RegistrationResponse = RegistrationSuccessResponse | RegistrationErrorResponse;
