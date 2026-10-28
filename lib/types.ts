@@ -14,6 +14,39 @@ export type TicketType = {
   max_capacity: number;
 };
 
+export type OrganizerEvent = {
+  id: string;
+  title: string;
+  startsAt: string;
+  place: string;
+  maxCapacity: number;
+  registeredCount: number;
+};
+
+export type TicketTypeCapacity = {
+  id: string;
+  name: string;
+  maxCapacity: number;
+  registeredCount: number;
+};
+
+export type Registration = {
+  id: string;
+  attendeeName: string;
+  attendeeEmail: string;
+  createdAt: string;
+  ticketTypeId: string;
+  ticketTypeName: string;
+  ticketCode: string | null;
+  ticketStatus: TicketStatus | null;
+};
+
+export type EventDashboard = {
+  event: OrganizerEvent;
+  ticketTypes: TicketTypeCapacity[];
+  registrations: Registration[];
+};
+
 export type PublicEventRow = {
   event_id: string;
   title: string;

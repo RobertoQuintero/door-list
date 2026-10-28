@@ -15,3 +15,11 @@ export function formatEventDate(value: string) {
     timeZone: productTimeZone,
   }).format(new Date(value));
 }
+
+export function formatRegistrationDateTime(value: string) {
+  return new Intl.DateTimeFormat(locale, {
+    dateStyle: "short",
+    timeStyle: "short",
+    timeZone: productTimeZone,
+  }).format(new Date(value));
+}
