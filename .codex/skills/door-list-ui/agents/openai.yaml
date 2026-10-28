@@ -1,0 +1,4 @@
+interface:
+  display_name: "Door List UI"
+  short_description: "Sistema visual consistente para Door List"
+  default_prompt: "Usa $door-list-ui para implementar esta interfaz con el sistema visual del proyecto."

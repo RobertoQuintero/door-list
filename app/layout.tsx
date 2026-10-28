@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import "./unified-ui.css";
 
 export const metadata: Metadata = {
   title: "Noches de Mercurio | door-list",

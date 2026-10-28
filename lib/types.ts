@@ -47,6 +47,19 @@ export type EventDashboard = {
   registrations: Registration[];
 };
 
+export type RegistrationTrendPoint = {
+  date: string;
+  count: number;
+};
+
+export type RegistrationTrendResponse = {
+  data: RegistrationTrendPoint[];
+};
+
+export type ApiErrorResponse = {
+  error: string;
+};
+
 export type PublicEventRow = {
   event_id: string;
   title: string;

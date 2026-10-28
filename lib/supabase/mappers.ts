@@ -1,11 +1,17 @@
 import type {
   EventDashboard,
   OrganizerEvent,
+  RegistrationTrendPoint,
   RegistrationResultRow,
   RegistrationSuccessResponse,
   TicketEmailData,
   TicketEmailRow,
 } from "../types";
+
+export type RegistrationTrendRow = {
+  registration_date: string;
+  registration_count: number;
+};
 
 export type OrganizerEventRow = {
   event_id: string;
@@ -42,6 +48,13 @@ export function mapOrganizerEvent(row: OrganizerEventRow): OrganizerEvent {
     place: row.place,
     maxCapacity: row.max_capacity,
     registeredCount: row.registered_count,
+  };
+}
+
+export function mapRegistrationTrendPoint(row: RegistrationTrendRow): RegistrationTrendPoint {
+  return {
+    date: row.registration_date,
+    count: row.registration_count,
   };
 }
 

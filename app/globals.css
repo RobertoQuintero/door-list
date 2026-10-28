@@ -1,6 +1,19 @@
 @import "tailwindcss";
 
 :root {
+  --ui-canvas: #f3f0e8;
+  --ui-surface: #fffdf7;
+  --ui-ink: #171713;
+  --ui-muted: #69655d;
+  --ui-line: #b8b2a6;
+  --ui-primary: #2948c7;
+  --ui-primary-hover: #20379a;
+  --ui-accent: #d8ff3f;
+  --ui-danger: #a33c32;
+  --ui-success: #247344;
+  --font-display: Arial, Helvetica, sans-serif;
+  --font-body: Arial, Helvetica, sans-serif;
+  --font-data: "Courier New", Courier, monospace;
   --night: #111a38;
   --ink: #091022;
   --ticket: #f0f2ff;
@@ -193,7 +206,7 @@ button:active {
 }
 
 /* Organizer workspace: a utilitarian backstage board, not a public ticket. */
-:root { --paper: #f5f2ea; --black: #191714; --cobalt: #2a45b8; --lime: #d8ff3f; --muted: #766f64; }
+:root { --paper: var(--ui-canvas); --black: var(--ui-ink); --cobalt: var(--ui-primary); --lime: var(--ui-accent); --muted: var(--ui-muted); }
 body { background: var(--paper); color: var(--black); font-family: Arial, Helvetica, sans-serif; }
 button, input, textarea { font: inherit; }
 button { width: auto; margin: 0; box-shadow: none; border: 0; text-transform: none; letter-spacing: 0; }

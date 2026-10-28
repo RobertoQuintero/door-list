@@ -143,7 +143,7 @@ export default function PublicRegistrationPage() {
     setMessage("No pudimos completar tu registro.");
   }
 
-  if (viewState === "loading") return <main className="registration-page"><p className="registration-status">Consultando disponibilidad…</p></main>;
+  if (viewState === "loading") return <main className="registration-page" aria-busy="true"><p className="registration-status" aria-live="polite">Consultando la disponibilidad del evento…</p></main>;
   if (viewState === "unavailable") return <main className="registration-page"><section className="registration-card registration-empty"><p className="registration-kicker">Door list</p><h1>Registro cerrado</h1><p>Este evento no está disponible para registro.</p></section></main>;
   if (viewState === "error" || !event) return <main className="registration-page"><section className="registration-card registration-empty"><p className="registration-kicker">Door list</p><h1>No pudimos abrir el registro</h1><p>{message}</p><button type="button" onClick={() => void loadEvent()}>Intentar de nuevo</button></section></main>;
 

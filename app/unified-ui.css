@@ -1,0 +1,361 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.events-page,
+.registration-page {
+  min-height: 100svh;
+  background: var(--ui-canvas);
+  color: var(--ui-ink);
+  font-family: var(--font-body);
+}
+
+.events-page {
+  padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 4rem);
+}
+
+.events-hero,
+.events-list {
+  width: min(100%, 88rem);
+  max-width: 88rem;
+  margin-inline: auto;
+}
+
+.events-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 26rem);
+  gap: 3rem;
+  align-items: end;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+  border-bottom: 2px solid var(--ui-ink);
+}
+
+.events-kicker,
+.event-card-date {
+  margin: 0;
+  color: var(--ui-primary);
+  font: 700 0.75rem/1.3 var(--font-data);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.events-hero h1 {
+  grid-row: 2;
+  max-width: 11ch;
+  margin: 1rem 0 0;
+  color: var(--ui-ink);
+  font: 800 clamp(3.5rem, 9vw, 7.8rem)/0.82 var(--font-display);
+  letter-spacing: -0.085em;
+  text-transform: none;
+}
+
+.events-hero > p:last-child {
+  grid-column: 2;
+  grid-row: 2;
+  max-width: 26rem;
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.events-list {
+  display: grid;
+  padding-top: clamp(3rem, 6vw, 5rem);
+}
+
+.events-list-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.events-list-heading h2 {
+  margin: 0;
+  font: 800 clamp(2rem, 4vw, 3.5rem)/0.95 var(--font-display);
+  letter-spacing: -0.065em;
+}
+
+.events-list-heading .events-kicker { order: 2; }
+
+.event-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem);
+  gap: 3rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--ui-line);
+  border-bottom: 0;
+}
+
+.event-card:first-of-type { border-top: 2px solid var(--ui-ink); }
+
+.event-card h2 {
+  max-width: 18ch;
+  margin: 0.5rem 0 0;
+  color: var(--ui-ink);
+  font: 800 clamp(2rem, 4vw, 3.5rem)/0.95 var(--font-display);
+  letter-spacing: -0.065em;
+}
+
+.event-card h2 + p {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: var(--ui-muted);
+  line-height: 1.5;
+}
+
+.event-card-place { margin: 0.75rem 0 0; font-size: 0.875rem; font-weight: 700; }
+
+.event-card-action {
+  display: grid;
+  align-content: space-between;
+  justify-items: end;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.event-card-action span {
+  padding: 0.5rem 0.75rem;
+  background: var(--ui-accent);
+  color: var(--ui-ink);
+  font: 700 0.75rem/1.3 var(--font-data);
+  letter-spacing: 0.06em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.event-card-action a,
+.registration-ticket-link {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--ui-primary);
+  color: var(--ui-surface);
+  font-weight: 800;
+  text-decoration: none;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.event-card-action a:hover,
+.registration-ticket-link:hover { background: var(--ui-primary-hover); }
+
+.events-page a:focus-visible,
+.registration-page a:focus-visible,
+.registration-page button:focus-visible,
+.registration-page input:focus-visible {
+  outline: 3px solid var(--ui-primary);
+  outline-offset: 3px;
+}
+
+.events-state {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  padding: 2rem;
+  border: 1px solid var(--ui-line);
+  color: var(--ui-muted);
+}
+
+.events-state strong { color: var(--ui-ink); font-size: 1.25rem; }
+.events-state p { margin: 0; line-height: 1.5; }
+.events-loading { border-top: 2px solid var(--ui-ink); }
+
+.event-row-skeleton {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr) 12rem;
+  gap: 2rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--ui-line);
+}
+
+.event-row-skeleton span {
+  min-height: 1.5rem;
+  background: color-mix(in srgb, var(--ui-line) 48%, transparent);
+}
+
+.event-row-skeleton span:nth-child(2) { min-height: 4rem; }
+
+.registration-page {
+  display: grid;
+  place-items: center;
+  padding: clamp(2rem, 6vw, 5rem) 1rem;
+}
+
+.registration-card {
+  position: relative;
+  width: min(100%, 42rem);
+  padding: clamp(2rem, 6vw, 4rem);
+  border: 2px solid var(--ui-ink);
+  background: var(--ui-surface);
+  box-shadow: 0.75rem 0.75rem 0 var(--ui-primary);
+}
+
+.registration-card::before,
+.registration-card::after {
+  position: absolute;
+  top: 15rem;
+  width: 1.5rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ui-canvas);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.registration-card::before { left: -0.75rem; }
+.registration-card::after { right: -0.75rem; }
+
+.registration-header { padding-bottom: 2rem; border-bottom: 2px dashed var(--ui-line); }
+
+.registration-kicker {
+  margin: 0 0 0.75rem;
+  color: var(--ui-primary);
+  font: 700 0.75rem/1.3 var(--font-data);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.registration-card h1 {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--ui-ink);
+  font: 800 clamp(2rem, 4vw, 3.5rem)/0.95 var(--font-display);
+  letter-spacing: -0.065em;
+  text-transform: none;
+}
+
+.registration-description {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: var(--ui-muted);
+  line-height: 1.5;
+}
+
+.registration-detail {
+  display: grid;
+  gap: 0.25rem;
+  margin: 1.5rem 0 0;
+  color: var(--ui-ink);
+  font: 700 0.75rem/1.5 var(--font-data);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.registration-detail time { padding: 0; border: 0; font: inherit; }
+.registration-form { margin-top: 2rem; }
+.registration-form fieldset { display: grid; gap: 1rem; margin: 0; padding: 0; border: 0; }
+.registration-form legend { margin-bottom: 1rem; font-weight: 800; }
+.registration-form label { display: grid; gap: 0.5rem; font-size: 0.875rem; font-weight: 700; }
+.registration-form input:not([type="radio"]) { min-height: 2.75rem; border: 1px solid var(--ui-line); background: var(--ui-surface); color: var(--ui-ink); }
+.ticket-options { display: grid; gap: 0.5rem; margin-bottom: 0.75rem; }
+
+.ticket-option {
+  display: flex !important;
+  align-items: center;
+  gap: 1rem;
+  min-height: 4rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--ui-line);
+  background: var(--ui-surface);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.ticket-option:hover { border-color: var(--ui-ink); }
+.ticket-option.selected { border: 2px solid var(--ui-ink); box-shadow: inset 0.5rem 0 0 var(--ui-accent); }
+.ticket-option.sold-out { opacity: 0.55; cursor: not-allowed; }
+.ticket-option input { width: 1rem; height: 1rem; accent-color: var(--ui-primary); }
+.ticket-option span { display: grid; gap: 0.25rem; }
+.ticket-option small { color: var(--ui-muted); font: 400 0.75rem/1.3 var(--font-data); }
+
+.registration-form button,
+.registration-empty button {
+  width: 100%;
+  min-height: 2.75rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--ui-primary);
+  color: var(--ui-surface);
+  transition: background 160ms ease;
+}
+
+.registration-form button:hover,
+.registration-empty button:hover { background: var(--ui-primary-hover); }
+.registration-form button:disabled { opacity: 0.55; }
+
+.registration-alert {
+  margin: 0.5rem 0 0;
+  padding: 0.75rem 1rem;
+  border-left: 0.25rem solid var(--ui-danger);
+  background: color-mix(in srgb, var(--ui-danger) 10%, var(--ui-surface));
+  color: var(--ui-danger);
+  line-height: 1.5;
+}
+
+.registration-status {
+  min-width: min(100%, 24rem);
+  padding: 2rem;
+  border: 2px solid var(--ui-ink);
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  font-weight: 700;
+}
+
+.registration-empty,
+.registration-success { display: grid; gap: 1rem; }
+.registration-empty p,
+.registration-success > p { margin: 0; line-height: 1.5; }
+.registration-success dl { display: grid; gap: 0.75rem; margin: 1rem 0 0; }
+.registration-success dl div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--ui-line); }
+.registration-success dt { color: var(--ui-muted); font: 700 0.75rem/1.3 var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; }
+.registration-success dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+
+.registration-email-status {
+  margin-top: 1.5rem !important;
+  padding: 0.75rem 1rem;
+  border-left: 0.25rem solid var(--ui-success);
+  background: color-mix(in srgb, var(--ui-success) 10%, var(--ui-surface));
+  color: var(--ui-success);
+  font-weight: 700;
+}
+
+.registration-ticket-link { display: block; margin-top: 0.5rem; text-align: center; }
+.registration-save-note { margin-top: 0 !important; color: var(--ui-muted); font-size: 0.875rem; text-align: center; }
+.registration-back { display: inline-block; margin-bottom: 1.5rem; color: var(--ui-ink); font-size: 0.875rem; font-weight: 700; text-decoration: none; }
+.registration-back:hover { color: var(--ui-primary); text-decoration: underline; }
+
+@media (max-width: 650px) {
+  .events-hero,
+  .event-card { grid-template-columns: 1fr; }
+  .events-hero { gap: 1.5rem; }
+  .events-hero > p:last-child { grid-column: 1; grid-row: auto; }
+  .event-card { gap: 1.5rem; }
+  .event-card-action { justify-items: start; }
+  .event-card-action span { text-align: left; }
+  .event-row-skeleton { grid-template-columns: 1fr; gap: 0.75rem; }
+  .event-row-skeleton span:last-child { width: 12rem; }
+}
+
+@media (max-width: 480px) {
+  .events-page { padding-inline: 1rem; }
+  .events-list-heading { align-items: start; flex-direction: column; }
+  .events-list-heading .events-kicker { order: initial; }
+  .registration-card { padding: 1.5rem; box-shadow: 0.5rem 0.5rem 0 var(--ui-primary); }
+  .registration-card::before,
+  .registration-card::after { top: 13rem; }
+  .registration-success dl div { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-card-action a,
+  .registration-ticket-link,
+  .ticket-option,
+  .registration-form button,
+  .registration-empty button { transition: none; }
+}
