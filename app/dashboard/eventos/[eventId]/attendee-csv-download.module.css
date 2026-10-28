@@ -1,0 +1,26 @@
+.downloadButton {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--ui-ink);
+  background: transparent;
+  color: var(--ui-ink);
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.downloadButton:hover {
+  background: var(--ui-ink);
+  color: var(--ui-surface);
+}
+
+.downloadButton:focus-visible {
+  outline: 3px solid var(--ui-primary);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .downloadButton {
+    transition: none;
+  }
+}
