@@ -1,16 +1,7 @@
 import QRCode from "qrcode";
 import { Resend } from "resend";
-
-type TicketEmailData = {
-  registrationId: string;
-  ticketCode: string;
-  attendeeName: string;
-  attendeeEmail: string;
-  eventTitle: string;
-  eventStartsAt: string;
-  eventPlace: string;
-  ticketTypeName: string;
-};
+import { formatEventDateTime } from "./format";
+import type { TicketEmailData } from "./types";
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>'"]/g, (character) => ({
@@ -20,14 +11,6 @@ function escapeHtml(value: string) {
     "'": "&#39;",
     '"': "&quot;",
   })[character] ?? character);
-}
-
-function formatEventDate(value: string) {
-  return new Intl.DateTimeFormat("es-MX", {
-    dateStyle: "full",
-    timeStyle: "short",
-    timeZone: "America/Mexico_City",
-  }).format(new Date(value));
 }
 
 function emailHtml(ticket: TicketEmailData, date: string) {
@@ -86,7 +69,7 @@ export async function sendTicketEmail(ticket: TicketEmailData) {
   const from = process.env.RESEND_FROM_EMAIL;
   if (!apiKey || !from) throw new Error("Resend is not configured");
 
-  const date = formatEventDate(ticket.eventStartsAt);
+  const date = formatEventDateTime(ticket.eventStartsAt);
   const qr = await QRCode.toBuffer(ticket.ticketCode, {
     type: "png",
     width: 520,

@@ -2,19 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { supabase } from "./lib/supabase";
-
-type PublicEvent = {
-  event_id: string;
-  title: string;
-  description: string | null;
-  starts_at: string;
-  place: string;
-  remaining_capacity: number;
-};
+import { formatEventDateTime } from "@/lib/format";
+import { supabase } from "@/lib/supabase/client";
+import type { PublicEventRow } from "@/lib/types";
 
 export default function PublicEventsPage() {
-  const [events, setEvents] = useState<PublicEvent[]>([]);
+  const [events, setEvents] = useState<PublicEventRow[]>([]);
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
@@ -22,7 +15,7 @@ export default function PublicEventsPage() {
       if (!supabase) { setState("error"); return; }
       const { data, error } = await supabase.rpc("get_public_events");
       if (error) { setState("error"); return; }
-      setEvents((data ?? []) as PublicEvent[]);
+      setEvents((data ?? []) as PublicEventRow[]);
       setState("ready");
     }
     void loadEvents();
@@ -35,7 +28,7 @@ export default function PublicEventsPage() {
       {state === "error" && <p className="events-message">No pudimos cargar los eventos. Actualiza la página para intentarlo de nuevo.</p>}
       {state === "ready" && !events.length && <p className="events-message">No hay eventos con registro abierto por ahora. Vuelve pronto.</p>}
       {events.map((event) => {
-        const date = new Intl.DateTimeFormat("es-MX", { dateStyle: "full", timeStyle: "short", timeZone: "America/Mexico_City" }).format(new Date(event.starts_at));
+        const date = formatEventDateTime(event.starts_at);
         return <article className="event-card" key={event.event_id}><div><p className="event-card-date">{date}</p><h2>{event.title}</h2>{event.description && <p>{event.description}</p>}<p className="event-card-place">{event.place}</p></div><div className="event-card-action"><span>{event.remaining_capacity} {event.remaining_capacity === 1 ? "lugar disponible" : "lugares disponibles"}</span><Link href={`/eventos/${event.event_id}/registro`}>Reservar lugar <b aria-hidden="true">→</b></Link></div></article>;
       })}
     </section>

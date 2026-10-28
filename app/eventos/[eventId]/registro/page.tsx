@@ -3,20 +3,9 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { supabase } from "../../../lib/supabase";
-
-type PublicRegistrationRow = {
-  event_id: string;
-  title: string;
-  description: string | null;
-  starts_at: string;
-  place: string;
-  ticket_type_id: string | null;
-  ticket_name: string | null;
-  ticket_capacity: number | null;
-  registered_count: number;
-  remaining_capacity: number;
-};
+import { formatEventDateTime } from "@/lib/format";
+import { supabase } from "@/lib/supabase/client";
+import type { RegistrationAvailabilityRow, RegistrationResponse } from "@/lib/types";
 
 type ViewState = "loading" | "available" | "unavailable" | "error";
 type SubmissionState = "idle" | "submitting" | "success";
@@ -36,7 +25,7 @@ const messages: Record<string, string> = {
 export default function PublicRegistrationPage() {
   const params = useParams<{ eventId: string }>();
   const eventId = params.eventId;
-  const [rows, setRows] = useState<PublicRegistrationRow[]>([]);
+  const [rows, setRows] = useState<RegistrationAvailabilityRow[]>([]);
   const [viewState, setViewState] = useState<ViewState>("loading");
   const [submissionState, setSubmissionState] = useState<SubmissionState>("idle");
   const [selectedTicketId, setSelectedTicketId] = useState("");
@@ -61,7 +50,7 @@ export default function PublicRegistrationPage() {
       return;
     }
 
-    const nextRows = (data ?? []) as PublicRegistrationRow[];
+    const nextRows = (data ?? []) as RegistrationAvailabilityRow[];
     if (!nextRows.length) {
       setViewState("unavailable");
       return;
@@ -110,7 +99,7 @@ export default function PublicRegistrationPage() {
       return;
     }
 
-    const result = await response.json() as { outcome?: string; ticketCode?: string; emailSent?: boolean };
+    const result = await response.json() as RegistrationResponse;
     if (result.outcome === "success" && result.ticketCode) {
       setTicketCode(result.ticketCode);
       setEmailSent(result.emailSent === true);
@@ -131,7 +120,7 @@ export default function PublicRegistrationPage() {
   if (viewState === "unavailable") return <main className="registration-page"><section className="registration-card registration-empty"><p className="registration-kicker">Door list</p><h1>Registro cerrado</h1><p>Este evento no está disponible para registro.</p></section></main>;
   if (viewState === "error" || !event) return <main className="registration-page"><section className="registration-card registration-empty"><p className="registration-kicker">Door list</p><h1>No pudimos abrir el registro</h1><p>{message}</p><button type="button" onClick={() => void loadEvent()}>Intentar de nuevo</button></section></main>;
 
-  const date = new Intl.DateTimeFormat("es-MX", { dateStyle: "full", timeStyle: "short", timeZone: "America/Mexico_City" }).format(new Date(event.starts_at));
+  const date = formatEventDateTime(event.starts_at);
   if (submissionState === "success") {
     const selectedTicket = tickets.find((ticket) => ticket.ticket_type_id === selectedTicketId);
     return <main className="registration-page"><section className="registration-card registration-success"><p className="registration-kicker">Registro confirmado</p><h1>Tu entrada está lista.</h1><p>Tu lugar para <strong>{event.title}</strong> quedó registrado.</p><dl><div><dt>Entrada</dt><dd>{selectedTicket?.ticket_name}</dd></div><div><dt>Nombre</dt><dd>{name.trim()}</dd></div><div><dt>Correo</dt><dd>{email.trim().toLowerCase()}</dd></div></dl><p className={emailSent ? "registration-email-status" : "registration-alert"} role="status">{emailSent ? "Te enviamos la entrada y su QR por correo." : "Tu registro se confirmó, pero no pudimos enviar el correo. Abre y guarda tu entrada desde este dispositivo."}</p><Link className="registration-ticket-link" href={`/entradas/${ticketCode}`}>Abrir mi entrada y QR →</Link><p className="registration-save-note">Guarda el enlace de tu entrada para presentarlo en el acceso.</p></section></main>;

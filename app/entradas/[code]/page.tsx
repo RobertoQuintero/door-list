@@ -4,20 +4,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { supabase } from "../../lib/supabase";
-
-type TicketStatus = "valid" | "used" | "revoked";
-
-type PublicTicket = {
-  ticket_code: string;
-  ticket_status: TicketStatus;
-  attendee_name: string;
-  attendee_email: string;
-  event_title: string;
-  event_starts_at: string;
-  event_place: string;
-  ticket_type_name: string;
-};
+import { formatEventDateTime } from "@/lib/format";
+import { supabase } from "@/lib/supabase/client";
+import type { PublicTicketRow, TicketStatus } from "@/lib/types";
 
 const statusCopy: Record<TicketStatus, { label: string; detail: string }> = {
   valid: { label: "Válida", detail: "Lista para presentarse en el acceso." },
@@ -28,7 +17,7 @@ const statusCopy: Record<TicketStatus, { label: string; detail: string }> = {
 export default function PublicTicketPage() {
   const params = useParams<{ code: string }>();
   const code = params.code.toLowerCase();
-  const [ticket, setTicket] = useState<PublicTicket | null>(null);
+  const [ticket, setTicket] = useState<PublicTicketRow | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "missing" | "error">("loading");
 
   useEffect(() => {
@@ -36,7 +25,7 @@ export default function PublicTicketPage() {
       if (!supabase || !/^[0-9a-f]{64}$/.test(code)) { setState("missing"); return; }
       const { data, error } = await supabase.rpc("get_public_ticket", { p_code: code });
       if (error) { setState("error"); return; }
-      const result = (data?.[0] ?? null) as PublicTicket | null;
+      const result = (data?.[0] ?? null) as PublicTicketRow | null;
       if (!result) { setState("missing"); return; }
       setTicket(result);
       setState("ready");
@@ -48,7 +37,7 @@ export default function PublicTicketPage() {
   if (state === "missing") return <main className="digital-ticket-page"><section className="digital-ticket digital-ticket-empty"><p className="digital-ticket-kicker">Door list</p><h1>Entrada no disponible</h1><p>Revisa que el enlace esté completo. Por seguridad no podemos buscar entradas por nombre o correo.</p><Link href="/">Ver eventos</Link></section></main>;
   if (state === "error" || !ticket) return <main className="digital-ticket-page"><section className="digital-ticket digital-ticket-empty"><p className="digital-ticket-kicker">Door list</p><h1>No pudimos abrir la entrada</h1><p>Actualiza la página para intentarlo de nuevo.</p></section></main>;
 
-  const date = new Intl.DateTimeFormat("es-MX", { dateStyle: "full", timeStyle: "short", timeZone: "America/Mexico_City" }).format(new Date(ticket.event_starts_at));
+  const date = formatEventDateTime(ticket.event_starts_at);
   const status = statusCopy[ticket.ticket_status];
 
   return <main className="digital-ticket-page"><article className={`digital-ticket status-${ticket.ticket_status}`}>

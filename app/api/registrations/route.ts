@@ -1,31 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import { sendTicketEmail } from "../../lib/ticket-email";
+import { sendTicketEmail } from "@/lib/ticket-email";
+import { mapRegistrationSuccess, mapTicketEmailData } from "@/lib/supabase/mappers";
+import type {
+  RegistrationRequest,
+  RegistrationResultRow,
+  TicketEmailRow,
+} from "@/lib/types";
 
 export const runtime = "nodejs";
-
-type RegistrationRequest = {
-  eventId?: unknown;
-  ticketTypeId?: unknown;
-  attendeeName?: unknown;
-  attendeeEmail?: unknown;
-};
-
-type RegistrationResult = {
-  outcome: string;
-  registration_id: string | null;
-  ticket_code: string | null;
-};
-
-type TicketData = {
-  ticket_code: string;
-  attendee_name: string;
-  attendee_email: string;
-  event_title: string;
-  event_starts_at: string;
-  event_place: string;
-  ticket_type_name: string;
-};
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -65,7 +48,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ outcome: "registration_error" }, { status: 500 });
   }
 
-  const result = (data?.[0] ?? null) as RegistrationResult | null;
+  const result = (data?.[0] ?? null) as RegistrationResultRow | null;
   if (result?.outcome !== "success" || !result.registration_id || !result.ticket_code) {
     return NextResponse.json({ outcome: result?.outcome ?? "registration_error" });
   }
@@ -73,39 +56,18 @@ export async function POST(request: Request) {
   const { data: ticketRows, error: ticketError } = await supabase.rpc("get_public_ticket", {
     p_code: result.ticket_code,
   });
-  const ticket = (ticketRows?.[0] ?? null) as TicketData | null;
+  const ticket = (ticketRows?.[0] ?? null) as TicketEmailRow | null;
   if (ticketError || !ticket) {
     console.error("Ticket lookup for email failed", ticketError?.message ?? "Ticket not found");
-    return NextResponse.json({
-      outcome: "success",
-      ticketCode: result.ticket_code,
-      emailSent: false,
-    }, { status: 201 });
+    return NextResponse.json(mapRegistrationSuccess(result, false), { status: 201 });
   }
 
   try {
-    await sendTicketEmail({
-      registrationId: result.registration_id,
-      ticketCode: ticket.ticket_code,
-      attendeeName: ticket.attendee_name,
-      attendeeEmail: ticket.attendee_email,
-      eventTitle: ticket.event_title,
-      eventStartsAt: ticket.event_starts_at,
-      eventPlace: ticket.event_place,
-      ticketTypeName: ticket.ticket_type_name,
-    });
+    await sendTicketEmail(mapTicketEmailData(ticket, result.registration_id));
   } catch (emailError) {
     console.error("Ticket email failed", emailError instanceof Error ? emailError.message : emailError);
-    return NextResponse.json({
-      outcome: "success",
-      ticketCode: result.ticket_code,
-      emailSent: false,
-    }, { status: 201 });
+    return NextResponse.json(mapRegistrationSuccess(result, false), { status: 201 });
   }
 
-  return NextResponse.json({
-    outcome: "success",
-    ticketCode: result.ticket_code,
-    emailSent: true,
-  }, { status: 201 });
+  return NextResponse.json(mapRegistrationSuccess(result, true), { status: 201 });
 }
