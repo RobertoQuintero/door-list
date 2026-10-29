@@ -4,8 +4,11 @@ import "./globals.css";
 import "./unified-ui.css";
 
 export const metadata: Metadata = {
-  title: "Noches de Mercurio | door-list",
-  description: "Registro para Noches de Mercurio en Ciudad de México.",
+  title: {
+    default: "Door List",
+    template: "%s | Door List",
+  },
+  description: "Publica eventos, registra asistentes y gestiona el acceso en puerta.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
